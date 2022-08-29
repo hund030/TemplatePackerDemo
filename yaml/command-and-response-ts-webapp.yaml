@@ -1,0 +1,18 @@
+metadata:
+  scenario: command-and-response
+  programmingLanguage: ts
+  hosting: webapp
+
+assets:
+  # Application code
+  - from: bot/ts/command-and-response
+    to: bot
+  - from: appPackage/command-and-response
+    to: templates/appPackage
+  - from: appPackage/common
+    to: templates/appPackage/resources
+  - from: bicep/bot-webapp-nodejs
+    to: templates/azure
+  - from: common/
+  - from: fx/bot-webapp
+    to: .fx/configs
