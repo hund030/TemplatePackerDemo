@@ -10,9 +10,9 @@ assets:
   - from: appPackage/command-and-response
     to: templates/appPackage
   - from: appPackage/common
-    to: templates/appPackage/resources
+    to: templates/appPackage
   - from: bicep/bot-webapp-nodejs
     to: templates/azure
-  - from: common/
   - from: fx/bot-webapp
     to: .fx/configs
+  - from: common/
