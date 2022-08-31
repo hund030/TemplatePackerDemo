@@ -44,7 +44,6 @@ export const main = async () => {
     const to = path.resolve(TemplatesPath, templateName, asset.to ?? "");
     fs.copySync(from, to, { overwrite: true });
   });
-  console.log(template);
 };
 
 main();
