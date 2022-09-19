@@ -3,26 +3,27 @@
   "version": "2.1.0",
   "components": [
     {
-      "name": "teams-bot",
-      "hosting": "azure-web-app",
-      "provision": false,
+      "name": "teams-tab",
+      "hosting": "azure-storage",
       "deploy": true,
-      "capabilities": ["command-and-response"],
+      "provision": true,
       "build": true,
-      "folder": "bot"
+      "folder": "tabs",
+      "sso": true
     },
     {
-      "name": "bot-service",
+      "name": "azure-storage",
+      "scenario": "Tab",
       "provision": true
-    },
-    {
-      "name": "azure-web-app",
-      "scenario": "Bot",
-      "connections": ["identity", "teams-bot"]
     },
     {
       "name": "identity",
       "provision": true
+    },
+    {
+      "name": "aad-app",
+      "provision": true,
+      "deploy": true
     }
   ],
   "programmingLanguage": "typescript",
@@ -31,20 +32,15 @@
     "version": "1.0.0",
     "hostType": "Azure",
     "azureResources": [],
-    "capabilities": ["Bot"],
+    "capabilities": ["Tab", "TabSSO"],
     "activeResourcePlugins": [
       "fx-resource-local-debug",
       "fx-resource-appstudio",
       "fx-resource-cicd",
       "fx-resource-api-connector",
-      "fx-resource-bot",
+      "fx-resource-aad-app-for-teams",
+      "fx-resource-frontend-hosting",
       "fx-resource-identity"
     ]
-  },
-  "pluginSettings": {
-    "fx-resource-bot": {
-      "host-type": "app-service",
-      "capabilities": ["command-and-response"]
-    }
   }
 }
