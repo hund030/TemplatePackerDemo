@@ -1,6 +1,5 @@
 {
   "appName": "{{appName}}",
-  "projectId": "{{projectId}}",
   "version": "2.1.0",
   "components": [
     {

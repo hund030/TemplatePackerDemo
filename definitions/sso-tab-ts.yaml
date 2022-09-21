@@ -5,22 +5,22 @@ metadata:
 
 assets:
   # Application code
-  - from: code/ts/sso-tab
+  - copyFrom: code/ts/sso-tab
     to: tabs
   # App package manifest
-  - from: appPackage/sso-tab
+  - copyFrom: appPackage/sso-tab
     to: templates/appPackage
   # Common app package files (color.png, outline.png)
-  - from: appPackage/common
+  - copyFrom: appPackage/common
     to: templates/appPackage
   # Bicep
-  - from: bicep/static-website-storage
+  - copyFrom: bicep/static-website-storage
     to: templates/azure
   # Debugging
-  - from: debugging/vscode/tab
+  - copyFrom: debugging/vscode/tab
     to: .vscode
   # Fx configs
-  - from: fx/sso-tab-storage
+  - copyFrom: fx/sso-tab-storage
     to: .fx/configs
   # Common files (.gitignore, package.json)
-  - from: common/
+  - copyFrom: common/

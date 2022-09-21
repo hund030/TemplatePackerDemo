@@ -5,19 +5,22 @@ metadata:
 
 assets:
   # Application code
-  - from: code/ts/command-and-response
+  - copyFrom: code/ts/command-and-response
     to: bot
   # App package manifest
-  - from: appPackage/command-and-response
+  - copyFrom: appPackage/command-and-response
     to: templates/appPackage
   # Common app package files (color.png, outline.png)
-  - from: appPackage/common
+  - copyFrom: appPackage/common
     to: templates/appPackage
   # Bicep
-  - from: bicep/bot-webapp-nodejs
+  - copyFrom: bicep/bot-webapp-nodejs
     to: templates/azure
+  # Debugging files
+  - copyFrom: debugging/vscode/bot
+    to: .vscode
   # Fx configs
-  - from: fx/bot-webapp
+  - copyFrom: fx/bot-webapp
     to: .fx/configs
   # Common files (.gitignore, package.json)
-  - from: common/
+  - copyFrom: common/

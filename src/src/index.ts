@@ -3,12 +3,12 @@ import { parse } from "yaml";
 import * as fs from "fs-extra";
 import path from "path";
 
-const BlocksPath = path.resolve(__dirname, "..", "..", "blocks");
+const BlocksPath = path.resolve(__dirname, "..", "..", "assets");
 const TemplatesPath = path.resolve(__dirname, "..", "..", "scenarios");
 
 interface Template {
   assets: {
-    from: string;
+    copyFrom: string;
     to?: string;
   }[];
   metadata?: {
@@ -36,7 +36,7 @@ export const main = async () => {
     (await fs.readFile(templateFile)).toString()
   ) as Template;
   template.assets.forEach(async (asset) => {
-    const from = path.resolve(BlocksPath, asset.from);
+    const from = path.resolve(BlocksPath, asset.copyFrom);
     if (!(await fs.pathExists(from))) {
       console.log(`Path does not exists: ${from}`);
     }
