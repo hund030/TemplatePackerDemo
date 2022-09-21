@@ -23,4 +23,4 @@ assets:
   - copyFrom: fx/bot-webapp
     to: .fx/configs
   # Common files (.gitignore, package.json)
-  - copyFrom: common/
+  - copyFrom: common
