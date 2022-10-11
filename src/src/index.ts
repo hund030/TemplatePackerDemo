@@ -2,9 +2,36 @@ import { exit } from "process";
 import { parse } from "yaml";
 import * as fs from "fs-extra";
 import path from "path";
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 
 const BlocksPath = path.resolve(__dirname, "..", "..", "assets");
 const TemplatesPath = path.resolve(__dirname, "..", "..", "scenarios");
+
+yargs(hideBin(process.argv))
+  .command(
+    "generate [yaml]",
+    "generate templates based on the definition yaml file",
+    (yargs: any) => {
+      return yargs.positional("yaml", {
+        describe: "template definition",
+      });
+    },
+    (argv: any) => {
+      if (argv.verbose) {
+        console.info(`start generate templates for :${argv.yaml}`);
+      }
+      remove(parseTemplateName(argv.yaml)).then(() => {
+        generate(argv.yaml);
+      });
+    }
+  )
+  .option("verbose", {
+    alias: "v",
+    type: "boolean",
+    description: "Run with verbose logging",
+  })
+  .parse();
 
 interface Template {
   assets: {
@@ -18,32 +45,33 @@ interface Template {
   };
 }
 
-export const main = async () => {
-  const inputs = process.argv.slice(2);
-  if (inputs.length !== 1) {
-    console.log(
-      "Program accepts one and only one argument: template file path."
-    );
-    exit(-1);
-  }
+function parseTemplateName(definitionFile: string): string {
+  return path.parse(definitionFile).name;
+}
 
-  const templateFile = inputs[0];
-  if (!(await fs.pathExists(templateFile))) {
-    console.log(`Specified template file: '${templateFile}' does not exist.`);
+async function remove(templateName: string): Promise<void> {
+  const templateDir = path.resolve(TemplatesPath, templateName);
+  if (!(await fs.pathExists(templateDir))) {
+    return;
+  }
+  await fs.remove(templateDir);
+}
+
+async function generate(definitionFile: string): Promise<void> {
+  if (!(await fs.pathExists(definitionFile))) {
+    console.log(`Specified template file: '${definitionFile}' does not exist.`);
     exit(-1);
   }
   const template = parse(
-    (await fs.readFile(templateFile)).toString()
+    (await fs.readFile(definitionFile)).toString()
   ) as Template;
   template.assets.forEach(async (asset) => {
     const from = path.resolve(BlocksPath, asset.copyFrom);
     if (!(await fs.pathExists(from))) {
       console.log(`Path does not exists: ${from}`);
     }
-    const templateName = path.parse(templateFile).name;
+    const templateName = path.parse(definitionFile).name;
     const to = path.resolve(TemplatesPath, templateName, asset.to ?? "");
     fs.copySync(from, to, { overwrite: true });
   });
-};
-
-main();
+}
