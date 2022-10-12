@@ -7,6 +7,7 @@ import { hideBin } from "yargs/helpers";
 
 const BlocksPath = path.resolve(__dirname, "..", "..", "assets");
 const TemplatesPath = path.resolve(__dirname, "..", "..", "scenarios");
+const DefinitionsPath = path.resolve(__dirname, "..", "..", "definitions");
 
 yargs(hideBin(process.argv))
   .command(
@@ -18,18 +19,30 @@ yargs(hideBin(process.argv))
       });
     },
     (argv: any) => {
-      if (argv.verbose) {
-        console.info(`start generate templates for :${argv.yaml}`);
+      if (argv.yaml) {
+        reGenerate(argv.yaml);
       }
-      remove(parseTemplateName(argv.yaml)).then(() => {
-        generate(argv.yaml);
-      });
+      if (argv.all) {
+        generateAll();
+      }
     }
   )
-  .option("verbose", {
-    alias: "v",
+  .check((argv: any) => {
+    if (!argv.yaml && !argv.all) {
+      throw new Error();
+    }
+    if (argv.yaml && argv.all) {
+      throw new Error();
+    }
+    if (argv.yaml && !fs.pathExistsSync(argv.yaml)) {
+      throw new Error();
+    }
+    return true;
+  })
+  .option("all", {
+    alias: "a",
     type: "boolean",
-    description: "Run with verbose logging",
+    description: "Re-generate all templates",
   })
   .parse();
 
@@ -43,6 +56,30 @@ interface Template {
     programmingLanguage: string;
     hosting: string;
   };
+}
+
+async function generateAll(): Promise<void> {
+  return fs.readdir(
+    DefinitionsPath,
+    async (error: NodeJS.ErrnoException, filenames: string[]) => {
+      if (error) {
+        console.error(error.toString());
+      }
+      await Promise.all(
+        filenames
+          .filter((filename) => path.extname(filename) === ".yaml")
+          .map((filename) =>
+            reGenerate(path.resolve(DefinitionsPath, filename))
+          )
+      );
+    }
+  );
+}
+
+async function reGenerate(definitionFile: string): Promise<void> {
+  return remove(parseTemplateName(definitionFile)).then(() => {
+    generate(definitionFile);
+  });
 }
 
 function parseTemplateName(definitionFile: string): string {
@@ -68,10 +105,11 @@ async function generate(definitionFile: string): Promise<void> {
   template.assets.forEach(async (asset) => {
     const from = path.resolve(BlocksPath, asset.copyFrom);
     if (!(await fs.pathExists(from))) {
-      console.log(`Path does not exists: ${from}`);
+      console.log(`Path does not exists: ${from}.`);
     }
     const templateName = path.parse(definitionFile).name;
     const to = path.resolve(TemplatesPath, templateName, asset.to ?? "");
+    // console.debug(`Copy ${from} to ${to}.`);
     fs.copySync(from, to, { overwrite: true });
   });
 }
