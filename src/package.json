@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "dev": "tsc && node ./lib/index.js",
-    "dev:example": "npm run dev ../yaml/command-and-response-ts-webapp.yaml",
-    "generate:all": "npm run dev --all",
+    "dev:example": "npm run dev generate ../yaml/command-and-response-ts-webapp.yaml",
+    "generate:all": "npm run dev -- generate --all",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
