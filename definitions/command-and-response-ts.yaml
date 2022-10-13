@@ -20,7 +20,7 @@ assets:
   - copyFrom: debugging/vscode/bot
     to: .vscode
   # Fx configs
-  - copyFrom: fx/bot-webapp
+  - copyFrom: fx/command-response-ts
     to: .fx/configs
   # Common files (.gitignore, package.json)
   - copyFrom: common
