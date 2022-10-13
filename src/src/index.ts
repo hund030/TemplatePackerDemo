@@ -20,10 +20,12 @@ yargs(hideBin(process.argv))
     },
     (argv: any) => {
       if (argv.yaml) {
-        reGenerate(argv.yaml);
+        remove(parseTemplateName(argv.yaml)).then(() => {
+          generate(argv.yaml);
+        });
       }
       if (argv.all) {
-        generateAll();
+        removeAll().then(generateAll);
       }
     }
   )
@@ -58,6 +60,22 @@ interface Template {
   };
 }
 
+async function removeAll(): Promise<void> {
+  return fs.readdir(
+    TemplatesPath,
+    async (error: NodeJS.ErrnoException, filenames: string[]) => {
+      if (error) {
+        console.error(error.toString());
+      }
+      await Promise.all(
+        filenames.map((filename) =>
+          fs.remove(path.resolve(TemplatesPath, filename))
+        )
+      );
+    }
+  );
+}
+
 async function generateAll(): Promise<void> {
   return fs.readdir(
     DefinitionsPath,
@@ -68,18 +86,10 @@ async function generateAll(): Promise<void> {
       await Promise.all(
         filenames
           .filter((filename) => path.extname(filename) === ".yaml")
-          .map((filename) =>
-            reGenerate(path.resolve(DefinitionsPath, filename))
-          )
+          .map((filename) => generate(path.resolve(DefinitionsPath, filename)))
       );
     }
   );
-}
-
-async function reGenerate(definitionFile: string): Promise<void> {
-  return remove(parseTemplateName(definitionFile)).then(() => {
-    generate(definitionFile);
-  });
 }
 
 function parseTemplateName(definitionFile: string): string {
