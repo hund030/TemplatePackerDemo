@@ -25,7 +25,7 @@ yargs(hideBin(process.argv))
         });
       }
       if (argv.all) {
-        removeAll().then(generateAll);
+        fs.emptyDir(TemplatesPath).then(generateAll);
       }
     }
   )
@@ -58,22 +58,6 @@ interface Template {
     programmingLanguage: string;
     hosting: string;
   };
-}
-
-async function removeAll(): Promise<void> {
-  return fs.readdir(
-    TemplatesPath,
-    async (error: NodeJS.ErrnoException, filenames: string[]) => {
-      if (error) {
-        console.error(error.toString());
-      }
-      await Promise.all(
-        filenames.map((filename) =>
-          fs.remove(path.resolve(TemplatesPath, filename))
-        )
-      );
-    }
-  );
 }
 
 async function generateAll(): Promise<void> {
