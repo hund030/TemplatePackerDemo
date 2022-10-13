@@ -1,14 +1,14 @@
 metadata:
-  scenario: command-and-response
+  scenario: notification
   programmingLanguage: ts
   hosting: webapp
 
 assets:
   # Application code
-  - copyFrom: code/ts/command-and-response
+  - copyFrom: code/ts/notification-restify
     to: bot
   # App package manifest
-  - copyFrom: appPackage/command-and-response
+  - copyFrom: appPackage/notification
     to: templates/appPackage
   # Common app package files (color.png, outline.png)
   - copyFrom: appPackage/common
@@ -20,7 +20,7 @@ assets:
   - copyFrom: debugging/vscode/bot
     to: .vscode
   # Fx configs
-  - copyFrom: fx/command-response-ts
+  - copyFrom: fx/notification-restify-ts
     to: .fx/configs
   # Common files (.gitignore, package.json)
   - copyFrom: common
