@@ -1,0 +1,26 @@
+metadata:
+  scenario: notification
+  programmingLanguage: ts
+  hosting: webapp
+
+assets:
+  # Application code
+  - copyFrom: code/ts/notification-restify
+    to: bot
+  # App package manifest
+  - copyFrom: appPackage/notification
+    to: templates/appPackage
+  # Common app package files (color.png, outline.png)
+  - copyFrom: appPackage/common
+    to: templates/appPackage
+  # Bicep
+  - copyFrom: bicep/bot-webapp-nodejs
+    to: templates/azure
+  # Debugging files
+  - copyFrom: debugging/vscode/bot
+    to: .vscode
+  # Fx configs
+  - copyFrom: fx/notification-restify-ts
+    to: .fx/configs
+  # Common files (.gitignore, package.json)
+  - copyFrom: common
