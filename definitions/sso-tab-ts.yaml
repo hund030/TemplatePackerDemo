@@ -1,0 +1,26 @@
+metadata:
+  scenario: sso-tab
+  programmingLanguage: ts
+  hosting: storage
+
+assets:
+  # Application code
+  - copyFrom: code/ts/sso-tab
+    to: tabs
+  # App package manifest
+  - copyFrom: appPackage/sso-tab
+    to: templates/appPackage
+  # Common app package files (color.png, outline.png)
+  - copyFrom: appPackage/common
+    to: templates/appPackage
+  # Bicep
+  - copyFrom: bicep/static-website-storage
+    to: templates/azure
+  # Debugging
+  - copyFrom: debugging/vscode/tab
+    to: .vscode
+  # Fx configs
+  - copyFrom: fx/sso-tab-storage
+    to: .fx/configs
+  # Common files (.gitignore, package.json)
+  - copyFrom: common
