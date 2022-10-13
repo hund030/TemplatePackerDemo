@@ -25,6 +25,10 @@ jobs:
         uses: actions/setup-node@v2.1.2
         with:
           node-version: 14
+      - name: Setup project
+        run: |
+          npm install
+        working-directory: ./src
       - name: templates check
         run: |
           npm run generate:all
