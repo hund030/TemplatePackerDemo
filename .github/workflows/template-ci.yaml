@@ -27,7 +27,7 @@ jobs:
           node-version: 14
       - name: Setup project
         run: |
-          npm install
+          npm ci
         working-directory: ./src
       - name: templates check
         run: |
