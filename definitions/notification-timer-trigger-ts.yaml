@@ -1,0 +1,28 @@
+metadata:
+  scenario: notification
+  programmingLanguage: ts
+  hosting: function
+
+assets:
+  # Application code
+  - copyFrom: code/ts/notification-function-base
+    to: bot
+  - copyFrom: code/ts/notification-trigger-timer
+    to: bot
+  # App package manifest
+  - copyFrom: appPackage/notification
+    to: templates/appPackage
+  # Common app package files (color.png, outline.png)
+  - copyFrom: appPackage/common
+    to: templates/appPackage
+  # Bicep
+  - copyFrom: bicep/bot-function-nodejs
+    to: templates/azure
+  # Debugging files
+  - copyFrom: debugging/vscode/function-bot
+    to: .vscode
+  # Fx configs
+  - copyFrom: fx/notification-function-ts
+    to: .fx/configs
+  # Common files (.gitignore, package.json)
+  - copyFrom: common
